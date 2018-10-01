@@ -23,9 +23,9 @@
 ##
 #############################################################################
 
-from PySide2 import QtCore, QtGui
+from PySide2 import QtCore, QtGui, QtWidgets
 
-class IconSizeSpinBox(QtGui.QSpinBox):
+class IconSizeSpinBox(QtWidgets.QSpinBox):
     @staticmethod
     def valueFromText(text):
         regExp = QtCore.QRegExp("(\\d+)(\\s*[xx]\\s*\\d+)?")
@@ -40,7 +40,7 @@ class IconSizeSpinBox(QtGui.QSpinBox):
         return "%d x %d" % (value, value)
 
 
-class ImageDelegate(QtGui.QItemDelegate):
+class ImageDelegate(QtWidgets.QItemDelegate):
     def createEditor(self, parent, option, index):
         comboBox = QtGui.QComboBox(parent)
         if index.column() == 1:
@@ -72,11 +72,11 @@ class ImageDelegate(QtGui.QItemDelegate):
         self.commitData.emit(self.sender())
 
 
-class IconPreviewArea(QtGui.QWidget):
+class IconPreviewArea(QtWidgets.QWidget):
     def __init__(self, parent=None):
         super(IconPreviewArea, self).__init__(parent)
 
-        mainLayout = QtGui.QGridLayout()
+        mainLayout = QtWidgets.QGridLayout()
         self.setLayout(mainLayout)
 
         self.icon = QtGui.QIcon()
@@ -114,17 +114,17 @@ class IconPreviewArea(QtGui.QWidget):
             self.updatePixmapLabels()
 
     def createHeaderLabel(self, text):
-        label = QtGui.QLabel("<b>%s</b>" % text)
+        label = QtWidgets.QLabel("<b>%s</b>" % text)
         label.setAlignment(QtCore.Qt.AlignCenter)
         return label
 
     def createPixmapLabel(self):
-        label = QtGui.QLabel()
+        label = QtWidgets.QLabel()
         label.setEnabled(False)
         label.setAlignment(QtCore.Qt.AlignCenter)
-        label.setFrameShape(QtGui.QFrame.Box)
-        label.setSizePolicy(QtGui.QSizePolicy.Expanding,
-                QtGui.QSizePolicy.Expanding)
+        label.setFrameShape(QtWidgets.QFrame.Box)
+        label.setSizePolicy(QtWidgets.QSizePolicy.Expanding,
+                QtWidgets.QSizePolicy.Expanding)
         label.setBackgroundRole(QtGui.QPalette.Base)
         label.setAutoFillBackground(True)
         label.setMinimumSize(132, 132)
@@ -148,11 +148,11 @@ class IconPreviewArea(QtGui.QWidget):
                 self.pixmapLabels[i][j].setEnabled(not pixmap.isNull())
 
 
-class MainWindow(QtGui.QMainWindow):
+class MainWindow(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
 
-        self.centralWidget = QtGui.QWidget()
+        self.centralWidget = QtWidgets.QWidget()
         self.setCentralWidget(self.centralWidget)
 
         self.createPreviewGroupBox()
@@ -163,7 +163,7 @@ class MainWindow(QtGui.QMainWindow):
         self.createMenus()
         self.createContextMenu()
 
-        mainLayout = QtGui.QGridLayout()
+        mainLayout = QtWidgets.QGridLayout()
         mainLayout.addWidget(self.previewGroupBox, 0, 0, 1, 2)
         mainLayout.addWidget(self.imagesGroupBox, 1, 0)
         mainLayout.addWidget(self.iconSizeGroupBox, 1, 1)
@@ -183,24 +183,24 @@ class MainWindow(QtGui.QMainWindow):
 
     def changeStyle(self):
         action = self.sender()
-        style = QtGui.QStyleFactory.create(action.data())
+        style = QtWidgets.QStyleFactory.create(action.data())
         if not style:
             return
 
-        QtGui.QApplication.setStyle(style)
+        QtWidgets.QApplication.setStyle(style)
 
         self.setButtonText(self.smallRadioButton, "Small (%d x %d)",
-                style, QtGui.QStyle.PM_SmallIconSize)
+                style, QtWidgets.QStyle.PM_SmallIconSize)
         self.setButtonText(self.largeRadioButton, "Large (%d x %d)",
-                style, QtGui.QStyle.PM_LargeIconSize)
+                style, QtWidgets.QStyle.PM_LargeIconSize)
         self.setButtonText(self.toolBarRadioButton, "Toolbars (%d x %d)",
-                style, QtGui.QStyle.PM_ToolBarIconSize)
+                style, QtWidgets.QStyle.PM_ToolBarIconSize)
         self.setButtonText(self.listViewRadioButton, "List views (%d x %d)",
-                style, QtGui.QStyle.PM_ListViewIconSize)
+                style, QtWidgets.QStyle.PM_ListViewIconSize)
         self.setButtonText(self.iconViewRadioButton, "Icon views (%d x %d)",
-                style, QtGui.QStyle.PM_IconViewIconSize)
+                style, QtWidgets.QStyle.PM_IconViewIconSize)
         self.setButtonText(self.tabBarRadioButton, "Tab bars (%d x %d)",
-                style, QtGui.QStyle.PM_TabBarIconSize)
+                style, QtWidgets.QStyle.PM_TabBarIconSize)
 
         self.changeSize()
 
@@ -214,19 +214,19 @@ class MainWindow(QtGui.QMainWindow):
             extent = self.otherSpinBox.value()
         else:
             if self.smallRadioButton.isChecked():
-                metric = QtGui.QStyle.PM_SmallIconSize
+                metric = QtWidgets.QStyle.PM_SmallIconSize
             elif self.largeRadioButton.isChecked():
-                metric = QtGui.QStyle.PM_LargeIconSize
+                metric = QtWidgets.QStyle.PM_LargeIconSize
             elif self.toolBarRadioButton.isChecked():
-                metric = QtGui.QStyle.PM_ToolBarIconSize
+                metric = QtWidgets.QStyle.PM_ToolBarIconSize
             elif self.listViewRadioButton.isChecked():
-                metric = QtGui.QStyle.PM_ListViewIconSize
+                metric = QtWidgets.QStyle.PM_ListViewIconSize
             elif self.iconViewRadioButton.isChecked():
-                metric = QtGui.QStyle.PM_IconViewIconSize
+                metric = QtWidgets.QStyle.PM_IconViewIconSize
             else:
-                metric = QtGui.QStyle.PM_TabBarIconSize
+                metric = QtWidgets.QStyle.PM_TabBarIconSize
 
-            extent = QtGui.QApplication.style().pixelMetric(metric)
+            extent = QtWidgets.QApplication.style().pixelMetric(metric)
 
         self.previewArea.setSize(QtCore.QSize(extent, extent))
         self.otherSpinBox.setEnabled(self.otherRadioButton.isChecked())
@@ -301,45 +301,45 @@ class MainWindow(QtGui.QMainWindow):
         self.changeIcon()
 
     def createPreviewGroupBox(self):
-        self.previewGroupBox = QtGui.QGroupBox("Preview")
+        self.previewGroupBox = QtWidgets.QGroupBox("Preview")
 
         self.previewArea = IconPreviewArea()
 
-        layout = QtGui.QVBoxLayout()
+        layout = QtWidgets.QVBoxLayout()
         layout.addWidget(self.previewArea)
         self.previewGroupBox.setLayout(layout)
 
     def createImagesGroupBox(self):
-        self.imagesGroupBox = QtGui.QGroupBox("Images")
+        self.imagesGroupBox = QtWidgets.QGroupBox("Images")
 
-        self.imagesTable = QtGui.QTableWidget()
-        self.imagesTable.setSelectionMode(QtGui.QAbstractItemView.NoSelection)
+        self.imagesTable = QtWidgets.QTableWidget()
+        self.imagesTable.setSelectionMode(QtWidgets.QAbstractItemView.NoSelection)
         self.imagesTable.setItemDelegate(ImageDelegate(self))
 
         self.imagesTable.horizontalHeader().setDefaultSectionSize(90)
         self.imagesTable.setColumnCount(3)
         self.imagesTable.setHorizontalHeaderLabels(("Image", "Mode", "State"))
-        self.imagesTable.horizontalHeader().setResizeMode(0, QtGui.QHeaderView.Stretch)
-        self.imagesTable.horizontalHeader().setResizeMode(1, QtGui.QHeaderView.Fixed)
-        self.imagesTable.horizontalHeader().setResizeMode(2, QtGui.QHeaderView.Fixed)
+        self.imagesTable.horizontalHeader().setSectionResizeMode(0, QtWidgets.QHeaderView.Stretch)
+        self.imagesTable.horizontalHeader().setSectionResizeMode(1, QtWidgets.QHeaderView.Fixed)
+        self.imagesTable.horizontalHeader().setSectionResizeMode(2, QtWidgets.QHeaderView.Fixed)
         self.imagesTable.verticalHeader().hide()
 
         self.imagesTable.itemChanged.connect(self.changeIcon)
 
-        layout = QtGui.QVBoxLayout()
+        layout = QtWidgets.QVBoxLayout()
         layout.addWidget(self.imagesTable)
         self.imagesGroupBox.setLayout(layout)
 
     def createIconSizeGroupBox(self):
-        self.iconSizeGroupBox = QtGui.QGroupBox("Icon Size")
+        self.iconSizeGroupBox = QtWidgets.QGroupBox("Icon Size")
 
-        self.smallRadioButton = QtGui.QRadioButton()
-        self.largeRadioButton = QtGui.QRadioButton()
-        self.toolBarRadioButton = QtGui.QRadioButton()
-        self.listViewRadioButton = QtGui.QRadioButton()
-        self.iconViewRadioButton = QtGui.QRadioButton()
-        self.tabBarRadioButton = QtGui.QRadioButton()
-        self.otherRadioButton = QtGui.QRadioButton("Other:")
+        self.smallRadioButton = QtWidgets.QRadioButton()
+        self.largeRadioButton = QtWidgets.QRadioButton()
+        self.toolBarRadioButton = QtWidgets.QRadioButton()
+        self.listViewRadioButton = QtWidgets.QRadioButton()
+        self.iconViewRadioButton = QtWidgets.QRadioButton()
+        self.tabBarRadioButton = QtWidgets.QRadioButton()
+        self.otherRadioButton = QtWidgets.QRadioButton("Other:")
 
         self.otherSpinBox = IconSizeSpinBox()
         self.otherSpinBox.setRange(8, 128)
@@ -354,12 +354,12 @@ class MainWindow(QtGui.QMainWindow):
         self.otherRadioButton.toggled.connect(self.changeSize)
         self.otherSpinBox.valueChanged.connect(self.changeSize)
 
-        otherSizeLayout = QtGui.QHBoxLayout()
+        otherSizeLayout = QtWidgets.QHBoxLayout()
         otherSizeLayout.addWidget(self.otherRadioButton)
         otherSizeLayout.addWidget(self.otherSpinBox)
         otherSizeLayout.addStretch()
 
-        layout = QtGui.QGridLayout()
+        layout = QtWidgets.QGridLayout()
         layout.addWidget(self.smallRadioButton, 0, 0)
         layout.addWidget(self.largeRadioButton, 1, 0)
         layout.addWidget(self.toolBarRadioButton, 2, 0)
@@ -371,29 +371,29 @@ class MainWindow(QtGui.QMainWindow):
         self.iconSizeGroupBox.setLayout(layout)
 
     def createActions(self):
-        self.addImagesAct = QtGui.QAction("&Add Images...", self,
+        self.addImagesAct = QtWidgets.QAction("&Add Images...", self,
                 shortcut="Ctrl+A", triggered=self.addImage)
 
-        self.removeAllImagesAct = QtGui.QAction("&Remove All Images", self,
+        self.removeAllImagesAct = QtWidgets.QAction("&Remove All Images", self,
                 shortcut="Ctrl+R", triggered=self.removeAllImages)
 
-        self.exitAct = QtGui.QAction("&Quit", self, shortcut="Ctrl+Q",
+        self.exitAct = QtWidgets.QAction("&Quit", self, shortcut="Ctrl+Q",
                 triggered=self.close)
 
-        self.styleActionGroup = QtGui.QActionGroup(self)
-        for styleName in QtGui.QStyleFactory.keys():
-            action = QtGui.QAction(self.styleActionGroup,
+        self.styleActionGroup = QtWidgets.QActionGroup(self)
+        for styleName in QtWidgets.QStyleFactory.keys():
+            action = QtWidgets.QAction(self.styleActionGroup,
                     text="%s Style" % styleName, checkable=True,
                     triggered=self.changeStyle)
             action.setData(styleName)
 
-        self.guessModeStateAct = QtGui.QAction("&Guess Image Mode/State",
+        self.guessModeStateAct = QtWidgets.QAction("&Guess Image Mode/State",
                 self, checkable=True, checked=True)
 
-        self.aboutAct = QtGui.QAction("&About", self, triggered=self.about)
+        self.aboutAct = QtWidgets.QAction("&About", self, triggered=self.about)
 
-        self.aboutQtAct = QtGui.QAction("About &Qt", self,
-                triggered=QtGui.qApp.aboutQt)
+        self.aboutQtAct = QtWidgets.QAction("About &Qt", self,
+                triggered=QtWidgets.qApp.aboutQt)
 
     def createMenus(self):
         self.fileMenu = self.menuBar().addMenu("&File")
@@ -422,12 +422,12 @@ class MainWindow(QtGui.QMainWindow):
     def checkCurrentStyle(self):
         for action in self.styleActionGroup.actions():
             styleName = action.data()
-            candidate = QtGui.QStyleFactory.create(styleName)
+            candidate = QtWidgets.QStyleFactory.create(styleName)
 
             if candidate is None:
                 return
 
-            if candidate.metaObject().className() == QtGui.QApplication.style().metaObject().className():
+            if candidate.metaObject().className() == QtWidgets.QApplication.style().metaObject().className():
                 action.trigger()
 
 
@@ -435,7 +435,7 @@ if __name__ == '__main__':
 
     import sys
 
-    app = QtGui.QApplication(sys.argv)
+    app = QtWidgets.QApplication(sys.argv)
     mainWin = MainWindow()
     mainWin.show()
     sys.exit(app.exec_())
