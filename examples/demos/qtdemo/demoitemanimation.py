@@ -1,9 +1,11 @@
 from PySide2 import QtCore, QtGui
 
 from colors import Colors
+from PySide2.QtCore import *
+from PySide2.QtGui import *
+from PySide2.QtWidgets import *
 
-
-class DemoItemAnimation(QtGui.QGraphicsItemAnimation):
+class DemoItemAnimation(QGraphicsItemAnimation):
     ANIM_IN, ANIM_OUT, ANIM_UNSPECIFIED = range(3)
 
     def __init__(self, item, inOrOut=ANIM_UNSPECIFIED):
@@ -48,10 +50,10 @@ class DemoItemAnimation(QtGui.QGraphicsItemAnimation):
 
         # If the item that this animation controls in currently under the
         # control of another animation, stop that animation first.
-        if self.demoItem().currentAnimation is not None:
-            self.demoItem().currentAnimation.timeline.stop()
-        self.demoItem().currentAnimation = self
-        self.timeline.stop()
+        # if self.demoItem().currentAnimation is not None:
+        #     self.demoItem().currentAnimation.timeline.stop()
+        # self.demoItem().currentAnimation = self
+        # self.timeline.stop()
 
         if Colors.noAnimations and not self.forcePlay:
             self.timeline.setCurrentTime(1)

@@ -1,22 +1,24 @@
 import sys
 
 from PySide2 import QtGui
-
+from PySide2.QtCore import *
+from PySide2.QtGui import *
+from PySide2.QtWidgets import *
 
 class Colors(object):
     # Colors:
-    sceneBg1 = QtGui.QColor(91, 91, 91)
-    sceneBg1Line = QtGui.QColor(114, 108, 104)
-    sceneBg2 = QtGui.QColor(0, 0, 0)
-    sceneLine = QtGui.QColor(255, 255, 255)
-    paperBg = QtGui.QColor(100, 100, 100)
-    menuTextFg = QtGui.QColor(255, 0, 0)
-    buttonBgLow = QtGui.QColor(255, 255, 255, 90)
-    buttonBgHigh = QtGui.QColor(255, 255, 255, 20)
-    buttonText = QtGui.QColor(255, 255, 255)
-    tt_green = QtGui.QColor(166, 206, 57)
-    fadeOut = QtGui.QColor(206, 246, 117, 0)
-    heading = QtGui.QColor(190, 230, 80)
+    sceneBg1 = QColor(91, 91, 91)
+    sceneBg1Line = QColor(114, 108, 104)
+    sceneBg2 = QColor(0, 0, 0)
+    sceneLine = QColor(255, 255, 255)
+    paperBg = QColor(100, 100, 100)
+    menuTextFg = QColor(255, 0, 0)
+    buttonBgLow = QColor(255, 255, 255, 90)
+    buttonBgHigh = QColor(255, 255, 255, 20)
+    buttonText = QColor(255, 255, 255)
+    tt_green = QColor(166, 206, 57)
+    fadeOut = QColor(206, 246, 117, 0)
+    heading = QColor(190, 230, 80)
     contentColor = "<font color='#eeeeee'>"
     glVersion = "Not detected!"
 
@@ -70,8 +72,8 @@ class Colors(object):
 
     @staticmethod
     def contentFont():
-        font = QtGui.QFont()
-        font.setStyleStrategy(QtGui.QFont.PreferAntialias)
+        font = QFont()
+        font.setStyleStrategy(QFont.PreferAntialias)
 
         if sys.platform == 'darwin':
             font.setPixelSize(14)
@@ -84,8 +86,8 @@ class Colors(object):
 
     @staticmethod
     def headingFont():
-        font = QtGui.QFont()
-        font.setStyleStrategy(QtGui.QFont.PreferAntialias)
+        font = QFont()
+        font.setStyleStrategy(QFont.PreferAntialias)
 
         font.setPixelSize(23)
         font.setBold(True)
@@ -95,8 +97,8 @@ class Colors(object):
 
     @staticmethod
     def buttonFont():
-        font = QtGui.QFont()
-        font.setStyleStrategy(QtGui.QFont.PreferAntialias)
+        font = QFont()
+        font.setStyleStrategy(QFont.PreferAntialias)
 
         font.setPixelSize(11)
         font.setFamily('Verdana')
@@ -105,8 +107,8 @@ class Colors(object):
 
     @staticmethod
     def tickerFont():
-        font = QtGui.QFont()
-        font.setStyleStrategy(QtGui.QFont.PreferAntialias)
+        font = QFont()
+        font.setStyleStrategy(QFont.PreferAntialias)
 
         if sys.platform == 'darwin':
             font.setPixelSize(11)
@@ -200,7 +202,7 @@ class Colors(object):
             elif s.startswith("-fps"):
                 cls.fps = int(parseFloat(s, "-fps"))
             elif s.startswith("-h") or s.startswith("-help"):
-                QtGui.QMessageBox.warning(None, "Arguments",
+                QMessageBox.warning(None, "Arguments",
                         "Usage: qtdemo.py [-verbose] [-no-adapt] [-opengl] "
                         "[-direct3d] [-software] [-fullscreen] [-ticker[0|1]] "
                         "[-animations[0|1]] [-no-blending] [-no-sync] "
@@ -266,20 +268,20 @@ class Colors(object):
             cls.direct3dAvailable = False
 
         # Check if X Render is present.
-        if hasattr(QtGui.QPixmap, 'x11PictureHandle'):
-            tmp = QtGui.QPixmap(1, 1)
+        if hasattr(QPixmap, 'x11PictureHandle'):
+            tmp = QPixmap(1, 1)
 
             if not tmp.x11PictureHandle():
                 cls.xRenderPresent = False
                 cls.debug("- X render not present")
 
-        w = QtGui.QWidget()
+        w = QWidget()
         cls.debug("- Color depth: %d" % w.depth())
 
     @classmethod
     def postConfigure(cls):
         if not cls.noAdapt:
-            w = QtGui.QWidget()
+            w = QWidget()
 
             if w.depth() < 16:
                 cls.useEightBitPalette = True
@@ -321,7 +323,7 @@ def parseFloat(argument, name):
 
 def parseText(argument, name):
     if len(name) == len(argument):
-        QtGui.QMessageBox.warning(None, "Arguments",
+        QMessageBox.warning(None, "Arguments",
                 "No argument number found for %s. Remember to put name and "
                 "value adjacent! (e.g. -fps100)")
         sys.exit(0)

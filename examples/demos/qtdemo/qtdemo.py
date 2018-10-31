@@ -47,7 +47,9 @@
 #sip.setapi('QVariant', 2)
 
 from PySide2 import QtCore, QtGui
-
+from PySide2.QtCore import *
+from PySide2.QtGui import *
+from PySide2.QtWidgets import *
 import qtdemo_rc
 
 from colors import Colors
@@ -66,11 +68,11 @@ if __name__ == '__main__':
 
     import sys
 
-    app = QtGui.QApplication(sys.argv)
+    app = QApplication(sys.argv)
     Colors.parseArgs(sys.argv)
 
     if sys.platform == 'win32':
-        QtGui.QMessageBox.information(None, "Documentation Warning",
+        QMessageBox.information(None, "Documentation Warning",
                 "If you are using the GPL version of PyQt from the binary "
                 "installer then you will probably see warning messages about "
                 "missing documentation.  This is because the installer does "

@@ -24,71 +24,74 @@
 #############################################################################
 
 from PySide2 import QtCore, QtGui
+from PySide2.QtCore import *
+from PySide2.QtGui import *
+from PySide2.QtWidgets import *
 
 import configdialog_rc
 
 
-class ConfigurationPage(QtGui.QWidget):
+class ConfigurationPage(QWidget):
     def __init__(self, parent=None):
         super(ConfigurationPage, self).__init__(parent)
 
-        configGroup = QtGui.QGroupBox("Server configuration")
+        configGroup = QGroupBox("Server configuration")
 
-        serverLabel = QtGui.QLabel("Server:")
-        serverCombo = QtGui.QComboBox()
+        serverLabel = QLabel("Server:")
+        serverCombo = QComboBox()
         serverCombo.addItem("Trolltech (Australia)")
         serverCombo.addItem("Trolltech (Germany)")
         serverCombo.addItem("Trolltech (Norway)")
         serverCombo.addItem("Trolltech (People's Republic of China)")
         serverCombo.addItem("Trolltech (USA)")
 
-        serverLayout = QtGui.QHBoxLayout()
+        serverLayout = QHBoxLayout()
         serverLayout.addWidget(serverLabel)
         serverLayout.addWidget(serverCombo)
 
-        configLayout = QtGui.QVBoxLayout()
+        configLayout = QVBoxLayout()
         configLayout.addLayout(serverLayout)
         configGroup.setLayout(configLayout)
 
-        mainLayout = QtGui.QVBoxLayout()
+        mainLayout = QVBoxLayout()
         mainLayout.addWidget(configGroup)
         mainLayout.addStretch(1)
 
         self.setLayout(mainLayout)
 
 
-class UpdatePage(QtGui.QWidget):
+class UpdatePage(QWidget):
     def __init__(self, parent=None):
         super(UpdatePage, self).__init__(parent)
 
-        updateGroup = QtGui.QGroupBox("Package selection")
-        systemCheckBox = QtGui.QCheckBox("Update system")
-        appsCheckBox = QtGui.QCheckBox("Update applications")
-        docsCheckBox = QtGui.QCheckBox("Update documentation")
+        updateGroup = QGroupBox("Package selection")
+        systemCheckBox = QCheckBox("Update system")
+        appsCheckBox = QCheckBox("Update applications")
+        docsCheckBox = QCheckBox("Update documentation")
 
-        packageGroup = QtGui.QGroupBox("Existing packages")
+        packageGroup = QGroupBox("Existing packages")
 
-        packageList = QtGui.QListWidget()
-        qtItem = QtGui.QListWidgetItem(packageList)
+        packageList = QListWidget()
+        qtItem = QListWidgetItem(packageList)
         qtItem.setText("Qt")
-        qsaItem = QtGui.QListWidgetItem(packageList)
+        qsaItem = QListWidgetItem(packageList)
         qsaItem.setText("QSA")
-        teamBuilderItem = QtGui.QListWidgetItem(packageList)
+        teamBuilderItem = QListWidgetItem(packageList)
         teamBuilderItem.setText("Teambuilder")
 
-        startUpdateButton = QtGui.QPushButton("Start update")
+        startUpdateButton = QPushButton("Start update")
 
-        updateLayout = QtGui.QVBoxLayout()
+        updateLayout = QVBoxLayout()
         updateLayout.addWidget(systemCheckBox)
         updateLayout.addWidget(appsCheckBox)
         updateLayout.addWidget(docsCheckBox)
         updateGroup.setLayout(updateLayout)
 
-        packageLayout = QtGui.QVBoxLayout()
+        packageLayout = QVBoxLayout()
         packageLayout.addWidget(packageList)
         packageGroup.setLayout(packageLayout)
 
-        mainLayout = QtGui.QVBoxLayout()
+        mainLayout = QVBoxLayout()
         mainLayout.addWidget(updateGroup)
         mainLayout.addWidget(packageGroup)
         mainLayout.addSpacing(12)
@@ -98,22 +101,22 @@ class UpdatePage(QtGui.QWidget):
         self.setLayout(mainLayout)
 
 
-class QueryPage(QtGui.QWidget):
+class QueryPage(QWidget):
     def __init__(self, parent=None):
         super(QueryPage, self).__init__(parent)
 
-        packagesGroup = QtGui.QGroupBox("Look for packages")
+        packagesGroup = QGroupBox("Look for packages")
 
-        nameLabel = QtGui.QLabel("Name:")
-        nameEdit = QtGui.QLineEdit()
+        nameLabel = QLabel("Name:")
+        nameEdit = QLineEdit()
 
-        dateLabel = QtGui.QLabel("Released after:")
-        dateEdit = QtGui.QDateTimeEdit(QtCore.QDate.currentDate())
+        dateLabel = QLabel("Released after:")
+        dateEdit = QDateTimeEdit(QtCore.QDate.currentDate())
 
-        releasesCheckBox = QtGui.QCheckBox("Releases")
-        upgradesCheckBox = QtGui.QCheckBox("Upgrades")
+        releasesCheckBox = QCheckBox("Releases")
+        upgradesCheckBox = QCheckBox("Upgrades")
 
-        hitsSpinBox = QtGui.QSpinBox()
+        hitsSpinBox = QSpinBox()
         hitsSpinBox.setPrefix("Return up to ")
         hitsSpinBox.setSuffix(" results")
         hitsSpinBox.setSpecialValueText("Return only the first result")
@@ -121,9 +124,9 @@ class QueryPage(QtGui.QWidget):
         hitsSpinBox.setMaximum(100)
         hitsSpinBox.setSingleStep(10)
 
-        startQueryButton = QtGui.QPushButton("Start query")
+        startQueryButton = QPushButton("Start query")
 
-        packagesLayout = QtGui.QGridLayout()
+        packagesLayout = QGridLayout()
         packagesLayout.addWidget(nameLabel, 0, 0)
         packagesLayout.addWidget(nameEdit, 0, 1)
         packagesLayout.addWidget(dateLabel, 1, 0)
@@ -133,7 +136,7 @@ class QueryPage(QtGui.QWidget):
         packagesLayout.addWidget(hitsSpinBox, 4, 0, 1, 2)
         packagesGroup.setLayout(packagesLayout)
 
-        mainLayout = QtGui.QVBoxLayout()
+        mainLayout = QVBoxLayout()
         mainLayout.addWidget(packagesGroup)
         mainLayout.addSpacing(12)
         mainLayout.addWidget(startQueryButton)
@@ -142,38 +145,38 @@ class QueryPage(QtGui.QWidget):
         self.setLayout(mainLayout)
 
 
-class ConfigDialog(QtGui.QDialog):
+class ConfigDialog(QDialog):
     def __init__(self, parent=None):
         super(ConfigDialog, self).__init__(parent)
 
-        self.contentsWidget = QtGui.QListWidget()
-        self.contentsWidget.setViewMode(QtGui.QListView.IconMode)
+        self.contentsWidget = QListWidget()
+        self.contentsWidget.setViewMode(QListView.IconMode)
         self.contentsWidget.setIconSize(QtCore.QSize(96, 84))
-        self.contentsWidget.setMovement(QtGui.QListView.Static)
+        self.contentsWidget.setMovement(QListView.Static)
         self.contentsWidget.setMaximumWidth(128)
         self.contentsWidget.setSpacing(12)
 
-        self.pagesWidget = QtGui.QStackedWidget()
+        self.pagesWidget = QStackedWidget()
         self.pagesWidget.addWidget(ConfigurationPage())
         self.pagesWidget.addWidget(UpdatePage())
         self.pagesWidget.addWidget(QueryPage())
 
-        closeButton = QtGui.QPushButton("Close")
+        closeButton = QPushButton("Close")
 
         self.createIcons()
         self.contentsWidget.setCurrentRow(0)
 
         closeButton.clicked.connect(self.close)
 
-        horizontalLayout = QtGui.QHBoxLayout()
+        horizontalLayout = QHBoxLayout()
         horizontalLayout.addWidget(self.contentsWidget)
         horizontalLayout.addWidget(self.pagesWidget, 1)
 
-        buttonsLayout = QtGui.QHBoxLayout()
+        buttonsLayout = QHBoxLayout()
         buttonsLayout.addStretch(1)
         buttonsLayout.addWidget(closeButton)
 
-        mainLayout = QtGui.QVBoxLayout()
+        mainLayout = QVBoxLayout()
         mainLayout.addLayout(horizontalLayout)
         mainLayout.addStretch(1)
         mainLayout.addSpacing(12)
@@ -190,20 +193,20 @@ class ConfigDialog(QtGui.QDialog):
         self.pagesWidget.setCurrentIndex(self.contentsWidget.row(current))
 
     def createIcons(self):
-        configButton = QtGui.QListWidgetItem(self.contentsWidget)
-        configButton.setIcon(QtGui.QIcon(':/images/config.png'))
+        configButton = QListWidgetItem(self.contentsWidget)
+        configButton.setIcon(QIcon(':/images/config.png'))
         configButton.setText("Configuration")
         configButton.setTextAlignment(QtCore.Qt.AlignHCenter)
         configButton.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
 
-        updateButton = QtGui.QListWidgetItem(self.contentsWidget)
-        updateButton.setIcon(QtGui.QIcon(':/images/update.png'))
+        updateButton = QListWidgetItem(self.contentsWidget)
+        updateButton.setIcon(QIcon(':/images/update.png'))
         updateButton.setText("Update")
         updateButton.setTextAlignment(QtCore.Qt.AlignHCenter)
         updateButton.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
 
-        queryButton = QtGui.QListWidgetItem(self.contentsWidget)
-        queryButton.setIcon(QtGui.QIcon(':/images/query.png'))
+        queryButton = QListWidgetItem(self.contentsWidget)
+        queryButton.setIcon(QIcon(':/images/query.png'))
         queryButton.setText("Query")
         queryButton.setTextAlignment(QtCore.Qt.AlignHCenter)
         queryButton.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
@@ -215,6 +218,6 @@ if __name__ == '__main__':
 
     import sys
 
-    app = QtGui.QApplication(sys.argv)
+    app = QApplication(sys.argv)
     dialog = ConfigDialog()
     sys.exit(dialog.exec_())    

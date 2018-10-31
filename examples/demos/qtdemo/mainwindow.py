@@ -6,16 +6,18 @@ from demoscene import DemoScene
 from demotextitem import DemoTextItem
 from imageitem import ImageItem
 from menumanager import MenuManager
+from PySide2.QtCore import *
+from PySide2.QtGui import *
+from PySide2.QtWidgets import *
 
-
-class MainWindow(QtGui.QGraphicsView):
+class MainWindow(QGraphicsView):
     def __init__(self, parent=None):
         super(MainWindow, self).__init__(parent)
 
         self.updateTimer = QtCore.QTimer(self)
         self.demoStartTime = QtCore.QTime()
         self.fpsTime = QtCore.QTime()
-        self.background = QtGui.QPixmap()
+        self.background = QPixmap()
 
         self.scene = None
         self.frameTimeList = []
@@ -38,7 +40,7 @@ class MainWindow(QtGui.QGraphicsView):
         self.drawBackgroundToPixmap()
 
     def setupWidget(self):
-        desktop = QtGui.QApplication.desktop()
+        desktop = QApplication.desktop()
         screenRect = desktop.screenGeometry(desktop.primaryScreen())
         windowRect = QtCore.QRect(0, 0, 800, 600)
 
@@ -55,14 +57,14 @@ class MainWindow(QtGui.QGraphicsView):
         self.setWindowTitle("PyQt Examples and Demos")
         self.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
-        self.setFrameStyle(QtGui.QFrame.NoFrame)
+        self.setFrameStyle(QFrame.NoFrame)
         self.setRenderingSystem()
         self.updateTimer.timeout.connect(self.tick)
 
     def setRenderingSystem(self):
         if Colors.direct3dRendering:
             viewport.setAttribute(QtCore.Qt.WA_MSWindowsUseDirect3D)
-            self.setCacheMode(QtGui.QGraphicsView.CacheNone)
+            self.setCacheMode(QGraphicsView.CacheNone)
             Colors.debug("- using Direct3D")
         elif Colors.openGlRendering:
             from PySide2 import QtOpenGL
@@ -73,11 +75,11 @@ class MainWindow(QtGui.QGraphicsView):
                 viewport.format().setSwapInterval(0)
 
             viewport.setAutoFillBackground(False)
-            self.setCacheMode(QtGui.QGraphicsView.CacheNone)
+            self.setCacheMode(QGraphicsView.CacheNone)
             Colors.debug("- using OpenGL")
         else:
-            viewport = QtGui.QWidget()
-            self.setCacheMode(QtGui.QGraphicsView.CacheBackground)
+            viewport = QWidget()
+            self.setCacheMode(QGraphicsView.CacheBackground)
             Colors.debug("- using software rendering")
 
         self.setViewport(viewport)
@@ -93,7 +95,7 @@ class MainWindow(QtGui.QGraphicsView):
         if not enable or Colors.noWindowMask:
             self.clearMask()
         else:
-            region = QtGui.QPolygon([
+            region = QPolygon([
                     # North side.
                     0, 0,
                     800, 0,
@@ -122,7 +124,7 @@ class MainWindow(QtGui.QGraphicsView):
         self.scene = DemoScene(self)
         self.scene.setSceneRect(0, 0, 800, 600)
         self.setScene(self.scene)
-        self.scene.setItemIndexMethod(QtGui.QGraphicsScene.NoIndex)
+        self.scene.setItemIndexMethod(QGraphicsScene.NoIndex)
 
     def switchTimerOnOff(self, on):
         ticker = MenuManager.instance().ticker
@@ -133,18 +135,18 @@ class MainWindow(QtGui.QGraphicsView):
             self.useTimer = True
             self.fpsTime = QtCore.QTime.currentTime()
             self.updateTimer.start(int(1000 / Colors.fps))
-            update_mode = QtGui.QGraphicsView.NoViewportUpdate
+            update_mode = QGraphicsView.NoViewportUpdate
         else:
             self.useTimer = False
             self.updateTimer.stop()
 
             if Colors.softwareRendering:
                 if Colors.noTicker:
-                    update_mode = QtGui.QGraphicsView.MinimalViewportUpdate
+                    update_mode = QGraphicsView.MinimalViewportUpdate
                 else:
-                    update_mode = QtGui.QGraphicsView.SmartViewportUpdate
+                    update_mode = QGraphicsView.SmartViewportUpdate
             else:
-                update_mode = QtGui.QGraphicsView.FullViewportUpdate
+                update_mode = QGraphicsView.FullViewportUpdate
 
         self.setViewportUpdateMode(update_mode)
 
@@ -202,7 +204,7 @@ class MainWindow(QtGui.QGraphicsView):
 
         self.viewport().update()
         if Colors.softwareRendering:
-            QtGui.QApplication.syncX()
+            QApplication.syncX()
 
         if self.useTimer:
             self.updateTimer.start(int(1000 / Colors.fps))
@@ -214,18 +216,18 @@ class MainWindow(QtGui.QGraphicsView):
                     DemoTextItem.DYNAMIC_TEXT)
             self.fpsLabel.setZValue(100)
             self.fpsLabel.setPos(Colors.stageStartX,
-                    600 - QtGui.QFontMetricsF(Colors.buttonFont()).height() - 5)
+                    600 - QFontMetricsF(Colors.buttonFont()).height() - 5)
 
-        self.trolltechLogo = ImageItem(QtGui.QImage(':/images/trolltech-logo.png'),
+        self.trolltechLogo = ImageItem(QImage(':/images/trolltech-logo.png'),
                 1000, 1000, self.scene, None, True, 0.5)
-        self.qtLogo = ImageItem(QtGui.QImage(':/images/qtlogo_small.png'), 1000,
+        self.qtLogo = ImageItem(QImage(':/images/qtlogo_small.png'), 1000,
                 1000, self.scene, None, True, 0.5)
         self.trolltechLogo.setZValue(100)
         self.qtLogo.setZValue(100)
         self.pausedLabel = DemoTextItem("PAUSED", Colors.buttonFont(),
                 QtCore.Qt.white, -1, self.scene, None)
         self.pausedLabel.setZValue(100)
-        fm = QtGui.QFontMetricsF(Colors.buttonFont())
+        fm = QFontMetricsF(Colors.buttonFont())
         self.pausedLabel.setPos(Colors.stageWidth - fm.width("PAUSED"),
                 590 - fm.height())
         self.pausedLabel.setRecursiveVisible(False)
@@ -262,12 +264,12 @@ class MainWindow(QtGui.QGraphicsView):
 
     def drawBackgroundToPixmap(self):
         r = self.scene.sceneRect()
-        self.background = QtGui.QPixmap(QtCore.qRound(r.width()),
-                QtCore.qRound(r.height()))
+        self.background = QPixmap(int(r.width()),
+                int(r.height()))
         self.background.fill(QtCore.Qt.black)
-        painter = QtGui.QPainter(self.background)
+        painter = QPainter(self.background)
 
-        bg = QtGui.QImage(':/images/demobg.png')
+        bg = QImage(':/images/demobg.png')
         painter.drawImage(0, 0, bg)
 
     def drawBackground(self, painter, rect):
@@ -286,7 +288,7 @@ class MainWindow(QtGui.QGraphicsView):
     def keyPressEvent(self, event):
         if event.key() == QtCore.Qt.Key_Escape:
             self.loop = False
-            QtGui.QApplication.quit()
+            QApplication.quit()
         elif event.key() == QtCore.Qt.Key_1:
             s = ""
             s += "Rendering system: "
@@ -303,7 +305,7 @@ class MainWindow(QtGui.QGraphicsView):
             s += ["no", "yes"][Colors.adapted]
             s += "\nOpenGL version: "
             s += Colors.glVersion
-            w = QtGui.QWidget()
+            w = QWidget()
             s += "\nColor bit depth: %d" % w.depth()
             s += "\nWanted FPS: %d" % Colors.fps
             s += "\nBenchmarked FPS: ";
@@ -327,7 +329,7 @@ class MainWindow(QtGui.QGraphicsView):
             s += ["no", "yes"][Colors.useLoop]
             s += "\nScreen sync: ";
             s += ["yes", "no"][Colors.noScreenSync]
-            QtGui.QMessageBox.information(None, "Current configuration", s)
+            QMessageBox.information(None, "Current configuration", s)
 
     def focusInEvent(self, event):
         if not Colors.pause:

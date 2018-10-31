@@ -42,12 +42,14 @@
 #############################################################################
 
 from PySide2 import QtCore, QtGui, QtWidgets
-
+from PySide2.QtCore import *
+from PySide2.QtGui import *
+from PySide2.QtWidgets import *
 import appchooser_rc
 
 
 class Pixmap(QtWidgets.QGraphicsWidget):
-    clicked = QtCore.Signal()
+    clicked = Signal()
 
     def __init__(self, pix, parent=None):
         super(Pixmap, self).__init__(parent)
@@ -56,7 +58,7 @@ class Pixmap(QtWidgets.QGraphicsWidget):
         self.p = QtGui.QPixmap(pix)
 
     def paint(self, painter, option, widget):
-        painter.drawPixmap(QtCore.QPointF(), self.p)
+        painter.drawPixmap(QPointF(), self.p)
 
     def mousePressEvent(self, ev):
         self.clicked.emit()
@@ -72,14 +74,14 @@ class Pixmap(QtWidgets.QGraphicsWidget):
 
 def createStates(objects, selectedRect, parent):
     for obj in objects:
-        state = QtCore.QState(parent)
+        state = QState(parent)
         state.assignProperty(obj, 'geometry', selectedRect)
         parent.addTransition(obj.clicked, state)
 
 
 def createAnimations(objects, machine):
     for obj in objects:
-        animation = QtCore.QPropertyAnimation(obj, 'geometry', obj)
+        animation = QPropertyAnimation(obj)
         machine.addDefaultAnimation(animation)
 
 
@@ -94,13 +96,13 @@ if __name__ == '__main__':
     p3 = Pixmap(QtGui.QPixmap(':/accessories-dictionary.png'))
     p4 = Pixmap(QtGui.QPixmap(':/k3b.png'))
 
-    p1.setGeometry(QtCore.QRectF(0.0, 0.0, 64.0, 64.0))
-    p2.setGeometry(QtCore.QRectF(236.0, 0.0, 64.0, 64.0))
-    p3.setGeometry(QtCore.QRectF(236.0, 236.0, 64.0, 64.0))
-    p4.setGeometry(QtCore.QRectF(0.0, 236.0, 64.0, 64.0))
+    p1.setGeometry(QRectF(0.0, 0.0, 64.0, 64.0))
+    p2.setGeometry(QRectF(236.0, 0.0, 64.0, 64.0))
+    p3.setGeometry(QRectF(236.0, 236.0, 64.0, 64.0))
+    p4.setGeometry(QRectF(0.0, 236.0, 64.0, 64.0))
 
     scene = QtWidgets.QGraphicsScene(0, 0, 300, 300)
-    scene.setBackgroundBrush(QtCore.Qt.white)
+    scene.setBackgroundBrush(Qt.white)
     scene.addItem(p1)
     scene.addItem(p2)
     scene.addItem(p3)
@@ -108,17 +110,17 @@ if __name__ == '__main__':
 
     window = QtWidgets.QGraphicsView(scene)
     window.setFrameStyle(0)
-    window.setAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)
-    window.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
-    window.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+    window.setAlignment(Qt.AlignLeft | Qt.AlignTop)
+    window.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+    window.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
 
-    machine = QtCore.QStateMachine()
-    machine.setGlobalRestorePolicy(QtCore.QStateMachine.RestoreProperties)
+    machine = QStateMachine()
+    machine.setGlobalRestorePolicy(QStateMachine.RestoreProperties)
 
-    group = QtCore.QState(machine)
-    selectedRect = QtCore.QRect(86, 86, 128, 128)
+    group = QState(machine)
+    selectedRect = QRect(86, 86, 128, 128)
 
-    idleState = QtCore.QState(group)
+    idleState = QState(group)
     group.setInitialState(idleState)
 
     objects = [p1, p2, p3, p4]

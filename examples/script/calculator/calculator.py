@@ -26,10 +26,9 @@
 
 import sys
 
-from PySide.QtCore import QIODevice, QFile, SIGNAL, SLOT
-from PySide.QtGui import QApplication, QLineEdit
-from PySide.QtScript import QScriptEngine
-from PySide.QtUiTools import QUiLoader
+from PySide2.QtCore import *
+from PySide2.QtGui import *
+from PySide2.QtWidgets import *
 
 try:
     from PySide.QtScriptTools import QScriptEngineDebugger

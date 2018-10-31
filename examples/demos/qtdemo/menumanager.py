@@ -10,6 +10,9 @@ from itemcircleanimation import ItemCircleAnimation
 from menucontent import MenuContentItem
 from score import Score
 from textbutton import TextButton
+from PySide2.QtCore import *
+from PySide2.QtGui import *
+from PySide2.QtWidgets import *
 
 class MenuManager(QtCore.QObject):
     ROOT, MENU1, MENU2, LAUNCH, DOCUMENTATION, QUIT, FULLSCREEN, UP, DOWN, \
@@ -66,7 +69,7 @@ class MenuManager(QtCore.QObject):
                 self.contentsDoc.setContent(xml_file, True)
 
         if not statusOK:
-            QtGui.QMessageBox.critical(None, "DOM Parser",
+            QMessageBox.critical(None, "DOM Parser",
                     "Could not read or find the contents document. Error at "
                     "line %d, column %d:\n%s" % (errorLine, errorColumn, errorStr))
             sys.exit(-1)
@@ -75,7 +78,7 @@ class MenuManager(QtCore.QObject):
         self.helpRootUrl = 'qthelp://com.trolltech.qt.%d%d%d/qdoc/' % QtCore.__version_info__
 
         # Store help collection file in cache dir of assistant.
-        cacheDir = QtGui.QDesktopServices.storageLocation(QtGui.QDesktopServices.DataLocation) + '/Trolltech/Assistant/'
+        cacheDir =  '/Trolltech/Assistant/'
         helpDataFile = 'qtdemo_%s.qhc' % QtCore.__version__
 
         dir = QtCore.QDir()
@@ -267,7 +270,7 @@ class MenuManager(QtCore.QObject):
             args = ['-enableRemoteControl']
             self.assistantProcess.start(app, args)
             if not self.assistantProcess.waitForStarted():
-                QtGui.QMessageBox.critical(None, "PyQt Demo",
+                QMessageBox.critical(None, "PyQt Demo",
                         "Could not start %s." % app)
                 return
 
@@ -302,10 +305,10 @@ class MenuManager(QtCore.QObject):
 
     def exampleError(self, error):
         if error != QtCore.QProcess.Crashed:
-            QtGui.QMessageBox.critical(None, "Failed to launch the example",
+            QMessageBox.critical(None, "Failed to launch the example",
                     "Could not launch the example. Ensure that it has been "
                     "built.",
-                    QtGui.QMessageBox.Cancel)
+                    QMessageBox.Cancel)
 
     def init(self, window):
         self.window = window

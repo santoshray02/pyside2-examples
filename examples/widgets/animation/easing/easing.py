@@ -51,7 +51,7 @@ class Animation(QtCore.QPropertyAnimation):
     LinearPath, CirclePath = range(2)
 
     def __init__(self, target, prop):
-        super(Animation, self).__init__(target, prop)
+        super(Animation, self).__init__(target)
         self.setPathType(Animation.LinearPath)
 
     def setPathType(self, pathType):

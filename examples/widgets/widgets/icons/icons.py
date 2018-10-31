@@ -222,11 +222,11 @@ class MainWindow(QtWidgets.QMainWindow):
             elif self.listViewRadioButton.isChecked():
                 metric = QtWidgets.QStyle.PM_ListViewIconSize
             elif self.iconViewRadioButton.isChecked():
-                metric = QtWidgets.QStyle.PM_IconViewIconSize
+                metric = QtGui.QStyle.PM_IconViewIconSize
             else:
-                metric = QtWidgets.QStyle.PM_TabBarIconSize
+                metric = QtGui.QStyle.PM_TabBarIconSize
 
-            extent = QtWidgets.QApplication.style().pixelMetric(metric)
+            extent = QtGui.QApplication.style().pixelMetric(metric)
 
         self.previewArea.setSize(QtCore.QSize(extent, extent))
         self.otherSpinBox.setEnabled(self.otherRadioButton.isChecked())

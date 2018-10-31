@@ -1,13 +1,15 @@
 from PySide2 import QtCore, QtGui
 
 from demoitem import DemoItem
-
+from PySide2.QtCore import *
+from PySide2.QtGui import *
+from PySide2.QtWidgets import *
 
 class DemoTextItem(DemoItem):
     STATIC_TEXT, DYNAMIC_TEXT = range(2)
 
     def __init__(self, text, font, textColor, textWidth, scene=None,
-            parent=None, type=STATIC_TEXT, bgColor=QtGui.QColor()):
+            parent=None, type=STATIC_TEXT, bgColor=QColor()):
         super(DemoTextItem, self).__init__(scene, parent)
 
         self.type = type
@@ -29,7 +31,7 @@ class DemoTextItem(DemoItem):
         sx = min(matrix.m11(), matrix.m22())
         sy = max(matrix.m22(), sx)
 
-        textItem = QtGui.QGraphicsTextItem()
+        textItem = QGraphicsTextItem()
         textItem.setHtml(self.text)
         textItem.setTextWidth(self.textWidth)
         textItem.setFont(self.font)
@@ -38,12 +40,12 @@ class DemoTextItem(DemoItem):
 
         w = textItem.boundingRect().width()
         h = textItem.boundingRect().height()
-        image = QtGui.QImage(int(w * sx), int(h * sy),
-                QtGui.QImage.Format_ARGB32_Premultiplied)
-        image.fill(QtGui.QColor(0, 0, 0, 0).rgba())
-        painter = QtGui.QPainter(image)
+        image = QImage(int(w * sx), int(h * sy),
+                QImage.Format_ARGB32_Premultiplied)
+        image.fill(QColor(0, 0, 0, 0).rgba())
+        painter = QPainter(image)
         painter.scale(sx, sy)
-        style = QtGui.QStyleOptionGraphicsItem()
+        style = QStyleOptionGraphicsItem()
         textItem.paint(painter, style, None)
 
         return image

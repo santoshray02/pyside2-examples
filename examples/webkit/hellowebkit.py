@@ -22,13 +22,14 @@
 #       MA 02110-1301, USA.
 
 import sys
-from PySide.QtCore import *
-from PySide.QtGui import *
-from PySide.QtWebKit import *
+from PySide2.QtCore import *
+from PySide2.QtGui import *
+from PySide2.QtWidgets import *
+from PySide2.QtWebEngineWidgets import *
 
 app = QApplication(sys.argv)
 
-web = QWebView()
+web = QWebEngineView()
 web.load(QUrl("http://google.com"))
 web.show()
 

@@ -163,7 +163,7 @@ class ItemCircleAnimation(DemoItem):
         self.tickOnPaint = False
         self.paused = False
         self.doIntroTransitions = True
-        self.setAcceptsHoverEvents(True)
+        self.setAcceptHoverEvents(True)
         self.setCursor(QtCore.Qt.OpenHandCursor)
         self.setupGuides()
         self.setupLetters()

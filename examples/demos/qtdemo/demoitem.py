@@ -1,4 +1,7 @@
 from PySide2 import QtCore, QtGui
+from PySide2.QtCore import *
+from PySide2.QtGui import *
+from PySide2.QtWidgets import *
 
 from colors import Colors
 
@@ -8,17 +11,17 @@ class SharedImage(object):
         self.refCount = 0
         self.image = None
         self.pixmap = None
-        self.matrix = QtGui.QMatrix()
+        self.matrix = QMatrix()
         self.unscaledBoundingRect = QtCore.QRectF()
 
 
-class DemoItem(QtGui.QGraphicsItem):
+class DemoItem(QGraphicsItem):
     sharedImageHash = {}
 
-    matrix = QtGui.QMatrix()
+    matrix = QMatrix()
 
     def __init__(self, scene=None, parent=None):
-        super(DemoItem, self).__init__(parent, scene)
+        super(DemoItem, self).__init__(parent)
 
         self.opacity = 1.0
         self.locked = False
@@ -142,27 +145,27 @@ class DemoItem(QtGui.QGraphicsItem):
             # Let subclass create and draw a new image according to the new
             # matrix.
             if Colors.noRescale:
-                m = QtGui.QMatrix()
+                m = QMatrix()
             else:
                 m = DemoItem.matrix
             image = self.createImage(m)
             if image is not None:
                 if Colors.showBoundingRect:
                     # Draw red transparent rect.
-                    painter = QtGui.QPainter(image)
-                    painter.fillRect(image.rect(), QtGui.QColor(255, 0, 0, 50))
+                    painter = QPainter(image)
+                    painter.fillRect(image.rect(), QColor(255, 0, 0, 50))
                     painter.end()
 
                 self.sharedImage.unscaledBoundingRect = self.sharedImage.matrix.inverted()[0].mapRect(QtCore.QRectF(image.rect()))
 
                 if Colors.usePixmaps:
                     if image.isNull():
-                        self.sharedImage.pixmap = QtGui.QPixmap(1, 1)
+                        self.sharedImage.pixmap = QPixmap(1, 1)
                     else:
-                        self.sharedImage.pixmap = QtGui.QPixmap(image.size())
+                        self.sharedImage.pixmap = QPixmap(image.size())
 
-                    self.sharedImage.pixmap.fill(QtGui.QColor(0, 0, 0, 0))
-                    painter = QtGui.QPainter(self.sharedImage.pixmap)
+                    self.sharedImage.pixmap.fill(QColor(0, 0, 0, 0))
+                    painter = QPainter(self.sharedImage.pixmap)
                     painter.drawImage(0, 0, image)
                 else:
                     self.sharedImage.image = image
@@ -179,8 +182,8 @@ class DemoItem(QtGui.QGraphicsItem):
 
     def paint(self, painter, option=None, widget=None):
         if self.validateImage():
-            wasSmoothPixmapTransform = painter.testRenderHint(QtGui.QPainter.SmoothPixmapTransform)
-            painter.setRenderHint(QtGui.QPainter.SmoothPixmapTransform)
+            wasSmoothPixmapTransform = painter.testRenderHint(QPainter.SmoothPixmapTransform)
+            painter.setRenderHint(QPainter.SmoothPixmapTransform)
 
             if Colors.noRescale:
                 # Let the painter scale the image for us.  This may degrade
@@ -191,7 +194,7 @@ class DemoItem(QtGui.QGraphicsItem):
                     painter.drawPixmap(self.pos(), self.sharedImage.pixmap)
             else:
                 m = painter.worldMatrix()
-                painter.setWorldMatrix(QtGui.QMatrix())
+                painter.setWorldMatrix(QMatrix())
 
                 x = m.dx()
                 y = m.dy()
@@ -207,7 +210,7 @@ class DemoItem(QtGui.QGraphicsItem):
                             self.sharedImage.pixmap)
 
             if not wasSmoothPixmapTransform:
-                painter.setRenderHint(QtGui.QPainter.SmoothPixmapTransform,
+                painter.setRenderHint(QPainter.SmoothPixmapTransform,
                         False)
 
     def createImage(self, matrix):

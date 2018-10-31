@@ -7,12 +7,16 @@
 #sip.setapi('QString', 2)
 
 from PySide2 import QtCore, QtGui
+from PySide2.QtCore import *
+from PySide2.QtGui import *
+from PySide2.QtWidgets import *
+
 
 from embeddeddialog import Ui_embeddedDialog
 from embeddeddialogs_rc import *
 
 
-class CustomProxy(QtGui.QGraphicsProxyWidget):
+class CustomProxy(QGraphicsProxyWidget):
     def __init__(self, parent=None, wFlags=0):
         super(CustomProxy, self).__init__(parent, wFlags)
 
@@ -22,10 +26,10 @@ class CustomProxy(QtGui.QGraphicsProxyWidget):
         self.timeLine.stateChanged.connect(self.stateChanged)
 
     def boundingRect(self):
-        return QtGui.QGraphicsProxyWidget.boundingRect(self).adjusted(0, 0, 10, 10)
+        return QGraphicsProxyWidget.boundingRect(self).adjusted(0, 0, 10, 10)
 
     def paintWindowFrame(self, painter, option, widget):
-        color = QtGui.QColor(0, 0, 0, 64)
+        color = QColor(0, 0, 0, 64)
 
         r = self.windowFrameRect()
         right = QtCore.QRectF(r.right(), r.top()+10, 10, r.height()-10)
@@ -33,7 +37,7 @@ class CustomProxy(QtGui.QGraphicsProxyWidget):
         intersectsRight = right.intersects(option.exposedRect)
         intersectsBottom = bottom.intersects(option.exposedRect)
         if intersectsRight and intersectsBottom:
-            path=QtGui.QPainterPath()
+            path=QPainterPath()
             path.addRect(right)
             path.addRect(bottom)
             painter.setPen(QtCore.Qt.NoPen)
@@ -84,7 +88,7 @@ class CustomProxy(QtGui.QGraphicsProxyWidget):
 
     def updateStep(self, step):
         r=self.boundingRect()
-        self.setTransform( QtGui.QTransform() \
+        self.setTransform( QTransform() \
                             .translate(r.width() / 2, r.height() / 2)\
                             .rotate(step * 30, QtCore.Qt.XAxis)\
                             .rotate(step * 10, QtCore.Qt.YAxis)\
@@ -113,7 +117,7 @@ class CustomProxy(QtGui.QGraphicsProxyWidget):
             self.timeLine.start()
 
 
-class EmbeddedDialog(QtGui.QDialog):
+class EmbeddedDialog(QDialog):
     def __init__(self, parent=None):
         super(EmbeddedDialog, self).__init__(parent)
 
@@ -121,7 +125,7 @@ class EmbeddedDialog(QtGui.QDialog):
         self.ui.setupUi(self)
         self.ui.layoutDirection.setCurrentIndex(self.layoutDirection() != QtCore.Qt.LeftToRight)
 
-        for styleName in QtGui.QStyleFactory.keys():
+        for styleName in QStyleFactory.keys():
             self.ui.style.addItem(styleName)
             if self.style().objectName().lower() == styleName.lower():
                 self.ui.style.setCurrentIndex(self.ui.style.count() -1)
@@ -148,11 +152,11 @@ class EmbeddedDialog(QtGui.QDialog):
         widget.setStyle(style)
         widget.setPalette(style.standardPalette())
         for child in widget.children():
-            if isinstance(child, QtGui.QWidget):
+            if isinstance(child, QWidget):
                 self.setStyleHelper(child, style)
     
     def styleChanged(self, styleName):
-        style=QtGui.QStyleFactory.create(styleName)
+        style=QStyleFactory.create(styleName)
         if style:
             self.setStyleHelper(self, style)
 
@@ -164,8 +168,8 @@ if __name__ == '__main__':
 
     import sys
 
-    app = QtGui.QApplication(sys.argv)
-    scene = QtGui.QGraphicsScene()
+    app = QApplication(sys.argv)
+    scene = QGraphicsScene()
     for y in range(10):
         for x in range(10):
             proxy = CustomProxy(None, QtCore.Qt.Window)
@@ -174,17 +178,17 @@ if __name__ == '__main__':
             rect = proxy.boundingRect()
 
             proxy.setPos( x * rect.width()*1.05, y*rect.height()*1.05 )
-            proxy.setCacheMode(QtGui.QGraphicsItem.DeviceCoordinateCache)
+            proxy.setCacheMode(QGraphicsItem.DeviceCoordinateCache)
             scene.addItem(proxy)
 
     scene.setSceneRect(scene.itemsBoundingRect())
 
-    view = QtGui.QGraphicsView(scene)
+    view = QGraphicsView(scene)
     view.scale(0.5, 0.5)
-    view.setRenderHints(view.renderHints() | QtGui.QPainter.Antialiasing  | QtGui.QPainter.SmoothPixmapTransform)
-    view.setBackgroundBrush(QtGui.QBrush(QtGui.QPixmap(':/No-Ones-Laughing-3.jpg')))
-    view.setCacheMode(QtGui.QGraphicsView.CacheBackground)
-    view.setViewportUpdateMode(QtGui.QGraphicsView.BoundingRectViewportUpdate)
+    view.setRenderHints(view.renderHints() | QPainter.Antialiasing  | QPainter.SmoothPixmapTransform)
+    view.setBackgroundBrush(QBrush(QPixmap(':/No-Ones-Laughing-3.jpg')))
+    view.setCacheMode(QGraphicsView.CacheBackground)
+    view.setViewportUpdateMode(QGraphicsView.BoundingRectViewportUpdate)
     view.show()
     view.setWindowTitle("Embedded Dialogs Demo")
 

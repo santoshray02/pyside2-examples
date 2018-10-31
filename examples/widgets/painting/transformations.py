@@ -25,22 +25,24 @@
 
 import sys
 from PySide2 import QtCore, QtGui
-
+from PySide2.QtCore import *
+from PySide2.QtGui import *
+from PySide2.QtWidgets import *
 
 NoTransformation, Translate, Rotate, Scale = range(4)
 
-class RenderArea(QtGui.QWidget):
+class RenderArea(QWidget):
     def __init__(self, parent=None):
-        QtGui.QWidget.__init__(self, parent)
+        QWidget.__init__(self, parent)
 
         newFont = self.font()
         newFont.setPixelSize(12)
         self.setFont(newFont)
 
-        fontMetrics = QtGui.QFontMetrics(newFont)
+        fontMetrics = QFontMetrics(newFont)
         self.xBoundingRect = fontMetrics.boundingRect(self.tr("x"))
         self.yBoundingRect = fontMetrics.boundingRect(self.tr("y"))
-        self.shape = QtGui.QPainterPath()
+        self.shape = QPainterPath()
         self.operations = []
 
     def setOperations(self, operations):
@@ -58,10 +60,10 @@ class RenderArea(QtGui.QWidget):
         return QtCore.QSize(232, 182)
 
     def paintEvent(self, event):
-        painter = QtGui.QPainter()
+        painter = QPainter()
         painter.begin(self)
-        painter.setRenderHint(QtGui.QPainter.Antialiasing)
-        painter.fillRect(event.rect(), QtGui.QBrush(QtCore.Qt.white))
+        painter.setRenderHint(QPainter.Antialiasing)
+        painter.fillRect(event.rect(), QBrush(QtCore.Qt.white))
 
         painter.translate(66, 66)
 
@@ -114,33 +116,33 @@ class RenderArea(QtGui.QWidget):
                 painter.rotate(60)
 
 
-class Window(QtGui.QWidget):
+class Window(QWidget):
 
     operationTable = (NoTransformation, Rotate, Scale, Translate)
     NumTransformedAreas = 3
 
     def __init__(self, parent=None):
-        QtGui.QWidget.__init__(self, parent)
+        QWidget.__init__(self, parent)
 
         self.originalRenderArea = RenderArea()
 
-        self.shapeComboBox = QtGui.QComboBox()
+        self.shapeComboBox = QComboBox()
         self.shapeComboBox.addItem(self.tr("Clock"))
         self.shapeComboBox.addItem(self.tr("House"))
         self.shapeComboBox.addItem(self.tr("Text"))
         self.shapeComboBox.addItem(self.tr("Truck"))
 
-        layout = QtGui.QGridLayout()
+        layout = QGridLayout()
         layout.addWidget(self.originalRenderArea, 0, 0)
         layout.addWidget(self.shapeComboBox, 1, 0)
 
-        self.transformedRenderAreas = range(Window.NumTransformedAreas)
-        self.operationComboBoxes = range(Window.NumTransformedAreas)
+        self.transformedRenderAreas = list(range(Window.NumTransformedAreas))
+        self.operationComboBoxes = list(range(Window.NumTransformedAreas))
 
         for i in range(Window.NumTransformedAreas):
             self.transformedRenderAreas[i] = RenderArea()
 
-            self.operationComboBoxes[i] = QtGui.QComboBox()
+            self.operationComboBoxes[i] = QComboBox()
             self.operationComboBoxes[i].addItem(self.tr("No transformation"))
             self.operationComboBoxes[i].addItem(self.tr("Rotate by 60\xB0"))
             self.operationComboBoxes[i].addItem(self.tr("Scale to 75%"))
@@ -159,7 +161,7 @@ class Window(QtGui.QWidget):
         self.setWindowTitle(self.tr("Transformations"))
 
     def setupShapes(self):
-        truck = QtGui.QPainterPath()
+        truck = QPainterPath()
         truck.setFillRule(QtCore.Qt.WindingFill)
         truck.moveTo(0.0, 87.0)
         truck.lineTo(0.0, 60.0)
@@ -176,7 +178,7 @@ class Window(QtGui.QWidget):
         truck.addEllipse(17.0, 75.0, 25.0, 25.0)
         truck.addEllipse(63.0, 75.0, 25.0, 25.0)
 
-        clock = QtGui.QPainterPath()
+        clock = QPainterPath()
         clock.addEllipse(-50.0, -50.0, 100.0, 100.0)
         clock.addEllipse(-48.0, -48.0, 96.0, 96.0)
         clock.moveTo(0.0, 0.0)
@@ -190,7 +192,7 @@ class Window(QtGui.QWidget):
         clock.lineTo(0.732, 2.732)
         clock.lineTo(0.0, 0.0)
 
-        house = QtGui.QPainterPath()
+        house = QPainterPath()
         house.moveTo(-45.0, -20.0)
         house.lineTo(0.0, -45.0)
         house.lineTo(45.0, -20.0)
@@ -200,10 +202,10 @@ class Window(QtGui.QWidget):
         house.addRect(15.0, 5.0, 20.0, 35.0)
         house.addRect(-35.0, -15.0, 25.0, 25.0)
 
-        text = QtGui.QPainterPath()
-        font = QtGui.QFont()
+        text = QPainterPath()
+        font = QFont()
         font.setPixelSize(50)
-        fontBoundingRect = QtGui.QFontMetrics(font).boundingRect(self.tr("Qt"))
+        fontBoundingRect = QFontMetrics(font).boundingRect(self.tr("Qt"))
         text.addText(-QtCore.QPointF(fontBoundingRect.center()), font, self.tr("Qt"))
 
         self.shapes = (clock, house, text, truck)
@@ -226,7 +228,7 @@ class Window(QtGui.QWidget):
 
 
 if __name__ == "__main__":
-    app = QtGui.QApplication(sys.argv)
+    app = QApplication(sys.argv)
     window = Window()
     window.show()
     sys.exit(app.exec_())

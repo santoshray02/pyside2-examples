@@ -27,11 +27,13 @@ import sys
 from PySide2 import QtCore, QtGui
 
 from ui_calculatorform import Ui_CalculatorForm
+from PySide2.QtCore import *
+from PySide2.QtGui import *
+from PySide2.QtWidgets import *
 
-
-class CalculatorForm(QtGui.QWidget):
+class CalculatorForm(QWidget):
     def __init__(self, parent=None):
-        QtGui.QWidget.__init__(self, parent)
+        QWidget.__init__(self, parent)
 
         self.ui = Ui_CalculatorForm()
 
@@ -47,7 +49,7 @@ class CalculatorForm(QtGui.QWidget):
 
 
 if __name__ == "__main__":
-    app = QtGui.QApplication(sys.argv)
+    app = QApplication(sys.argv)
     calculator = CalculatorForm()
     calculator.show()
     sys.exit(app.exec_())

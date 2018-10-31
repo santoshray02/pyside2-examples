@@ -5,6 +5,9 @@ from demoitem import DemoItem
 from demoitemanimation import DemoItemAnimation
 from demotextitem import DemoTextItem
 from scanitem import ScanItem
+from PySide2.QtCore import *
+from PySide2.QtGui import *
+from PySide2.QtWidgets import *
 
 
 class ButtonBackground(DemoItem):
@@ -27,37 +30,37 @@ class ButtonBackground(DemoItem):
         scaledRect = matrix.mapRect(QtCore.QRect(0, 0,
                 self.logicalSize.width(), self.logicalSize.height()))
 
-        image = QtGui.QImage(scaledRect.width(), scaledRect.height(),
-                QtGui.QImage.Format_ARGB32_Premultiplied)
-        image.fill(QtGui.QColor(0, 0, 0, 0).rgba())
-        painter = QtGui.QPainter(image)
-        painter.setRenderHint(QtGui.QPainter.SmoothPixmapTransform)
-        painter.setRenderHint(QtGui.QPainter.Antialiasing)
+        image = QImage(scaledRect.width(), scaledRect.height(),
+                QImage.Format_ARGB32_Premultiplied)
+        image.fill(QColor(0, 0, 0, 0).rgba())
+        painter = QPainter(image)
+        painter.setRenderHint(QPainter.SmoothPixmapTransform)
+        painter.setRenderHint(QPainter.Antialiasing)
         painter.setPen(QtCore.Qt.NoPen)
 
         if Colors.useEightBitPalette:
-            painter.setPen(QtGui.QColor(120, 120, 120))
+            painter.setPen(QColor(120, 120, 120))
             if self.pressed:
-                painter.setBrush(QtGui.QColor(60, 60, 60))
+                painter.setBrush(QColor(60, 60, 60))
             elif self.highlighted:
-                painter.setBrush(QtGui.QColor(100, 100, 100))
+                painter.setBrush(QColor(100, 100, 100))
             else:
-                painter.setBrush(QtGui.QColor(80, 80, 80))
+                painter.setBrush(QColor(80, 80, 80))
         else:
-            outlinebrush = QtGui.QLinearGradient(0, 0, 0, scaledRect.height())
-            brush = QtGui.QLinearGradient(0, 0, 0, scaledRect.height())
+            outlinebrush = QLinearGradient(0, 0, 0, scaledRect.height())
+            brush = QLinearGradient(0, 0, 0, scaledRect.height())
 
-            brush.setSpread(QtGui.QLinearGradient.PadSpread)
-            highlight = QtGui.QColor(255, 255, 255, 70)
-            shadow = QtGui.QColor(0, 0, 0, 70)
-            sunken = QtGui.QColor(220, 220, 220, 30)
+            brush.setSpread(QLinearGradient.PadSpread)
+            highlight = QColor(255, 255, 255, 70)
+            shadow = QColor(0, 0, 0, 70)
+            sunken = QColor(220, 220, 220, 30)
 
             if self.type == TextButton.PANEL:
-                normal1 = QtGui.QColor(200, 170, 160, 50)
-                normal2 = QtGui.QColor(50, 10, 0, 50)
+                normal1 = QColor(200, 170, 160, 50)
+                normal2 = QColor(50, 10, 0, 50)
             else:
-                normal1 = QtGui.QColor(255, 255, 245, 60)
-                normal2 = QtGui.QColor(255, 255, 235, 10)
+                normal1 = QColor(255, 255, 245, 60)
+                normal2 = QColor(255, 255, 235, 10)
 
             if self.pressed:
                 outlinebrush.setColorAt(0, shadow)
@@ -70,7 +73,7 @@ class ButtonBackground(DemoItem):
                 brush.setColorAt(0, normal1)
                 if not self.highlighted:
                     brush.setColorAt(1, normal2)
-                painter.setPen(QtGui.QPen(outlinebrush, 1))
+                painter.setPen(QPen(outlinebrush, 1))
 
             painter.setBrush(brush)
 
@@ -86,32 +89,32 @@ class ButtonBackground(DemoItem):
         scaledRect = matrix.mapRect(QtCore.QRect(0, 0,
                 self.logicalSize.width(), self.logicalSize.height()))
 
-        image = QtGui.QImage(scaledRect.width(), scaledRect.height(),
-                QtGui.QImage.Format_ARGB32_Premultiplied)
-        image.fill(QtGui.QColor(0, 0, 0, 0).rgba())
-        painter = QtGui.QPainter(image)
-        painter.setRenderHint(QtGui.QPainter.SmoothPixmapTransform)
-        painter.setRenderHint(QtGui.QPainter.Antialiasing)
+        image = QImage(scaledRect.width(), scaledRect.height(),
+                QImage.Format_ARGB32_Premultiplied)
+        image.fill(QColor(0, 0, 0, 0).rgba())
+        painter = QPainter(image)
+        painter.setRenderHint(QPainter.SmoothPixmapTransform)
+        painter.setRenderHint(QPainter.Antialiasing)
         painter.setPen(QtCore.Qt.NoPen)
 
         if Colors.useEightBitPalette:
-            painter.setPen(QtGui.QColor(120, 120, 120))
+            painter.setPen(QColor(120, 120, 120))
             if self.pressed:
-                painter.setBrush(QtGui.QColor(60, 60, 60))
+                painter.setBrush(QColor(60, 60, 60))
             elif self.highlighted:
-                painter.setBrush(QtGui.QColor(100, 100, 100))
+                painter.setBrush(QColor(100, 100, 100))
             else:
-                painter.setBrush(QtGui.QColor(80, 80, 80))
+                painter.setBrush(QColor(80, 80, 80))
         else:
-            outlinebrush = QtGui.QLinearGradient(0, 0, 0, scaledRect.height())
-            brush = QtGui.QLinearGradient(0, 0, 0, scaledRect.height())
+            outlinebrush = QLinearGradient(0, 0, 0, scaledRect.height())
+            brush = QLinearGradient(0, 0, 0, scaledRect.height())
 
-            brush.setSpread(QtGui.QLinearGradient.PadSpread)
-            highlight = QtGui.QColor(255, 255, 255, 70)
-            shadow = QtGui.QColor(0, 0, 0, 70)
-            sunken = QtGui.QColor(220, 220, 220, 30)
-            normal1 = QtGui.QColor(200, 170, 160, 50)
-            normal2 = QtGui.QColor(50, 10, 0, 50)
+            brush.setSpread(QLinearGradient.PadSpread)
+            highlight = QColor(255, 255, 255, 70)
+            shadow = QColor(0, 0, 0, 70)
+            sunken = QColor(220, 220, 220, 30)
+            normal1 = QColor(200, 170, 160, 50)
+            normal2 = QColor(50, 10, 0, 50)
 
             if self.pressed:
                 outlinebrush.setColorAt(0, shadow)
@@ -124,7 +127,7 @@ class ButtonBackground(DemoItem):
                 brush.setColorAt(0, normal1)
                 if not self.highlighted:
                     brush.setColorAt(1, normal2)
-                painter.setPen(QtGui.QPen(outlinebrush, 1))
+                painter.setPen(QPen(outlinebrush, 1))
 
             painter.setBrush(brush);
 
@@ -136,7 +139,7 @@ class ButtonBackground(DemoItem):
         sizey = 1.5 * matrix.m22()
         if self.type == TextButton.UP:
             sizey *= -1
-        path = QtGui.QPainterPath()
+        path = QPainterPath()
         path.moveTo(xOff, yOff + (5 * sizey))
         path.lineTo(xOff - (4 * sizex), yOff - (3 * sizey))
         path.lineTo(xOff + (4 * sizex), yOff - (3 * sizey))
@@ -175,7 +178,7 @@ class TextButton(DemoItem):
         self.bgDisabled = None
         self.state = TextButton.OFF
 
-        self.setAcceptsHoverEvents(True)
+        self.setAcceptHoverEvents(True)
         self.setCursor(QtCore.Qt.PointingHandCursor)
 
         # Calculate the button size.
